@@ -18,6 +18,11 @@ module Types
       argument :category_id, Int, required: false
     end
 
+    field :tag_details, TagDetailsType, null: false do
+      description 'Tag details for Compara Jogos'
+      argument :tag, String, required: true
+    end
+
     def search(term:, page: 1)
       if term.length < SiteSetting.min_search_term_length
         raise GraphQL::ExecutionError, "Your search term is too short."
@@ -47,6 +52,10 @@ module Types
 
     def categories
       CategoryList.new(context[:guardian]).categories
+    end
+
+    def tag_details(tag:)
+      { tag: tag }
     end
   end
 end

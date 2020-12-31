@@ -8,7 +8,7 @@ module Types
     field :avatar_template, String, null: false
     field :like_count, Int, null: false
     field :post_number, Int, null: false
-    field :created_at, String, null: false
+    field :created_at, GraphQL::Types::ISO8601DateTime, null: false
     field :cooked, String, null: false
     field :topic, TopicType, null: false
 

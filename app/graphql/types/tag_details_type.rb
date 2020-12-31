@@ -1,22 +1,21 @@
 # frozen_string_literal: true
 
-DATA_TAG = "ficha"
-IMAGE_TAG = "imagem"
-
 module Types
+  DATA_TAG = "ficha"
+  IMAGE_TAG = "imagem"
   class TagDetailsType < Types::BaseObject
-    field :topics, [TopicType], null: false
+    field :topics, [TopicWithPostsType], null: false
     field :feed, [SearchPostType], null: false
     field :data, TopicWithPostsType, null: false
     field :image, TopicWithPostsType, null: false
 
     def topics
       opts = {
-        guardian: context[:guardian],
+        #guardian: context[:guardian],
         page: 0,
         tags: [object[:tag]]
       }
-      TopicQuery.new(context[:guardian].user, opts).list_latest.topics
+      TopicQuery.new(nil, opts).list_latest.topics
     end
 
     def feed
@@ -26,8 +25,8 @@ module Types
         blurb_length: 300,
         page: 1
       }
-
-      result = Search.new("\\##{object[:tag]}", search_args).execute
+      "%5C%23dragon-castle"
+      result = Search.new("\"\\##{object[:tag]}\"", search_args).execute
       context.scoped_set!(:result, result)
       result.posts
     end

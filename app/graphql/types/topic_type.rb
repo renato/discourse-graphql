@@ -13,6 +13,8 @@ module Types
     field :views, Int, null: false
     field :reply_count, Int, null: false
     field :category, CategoryType, null: false
+    field :user, UserType, null: false
+    field :last_poster, UserType, null: false
 
     def category
       Loaders::RecordLoader.for(Category).load(object.category_id)

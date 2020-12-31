@@ -27,7 +27,7 @@ module Types
     end
 
     def topic
-      RecordLoader.for(Topic).load(object.topic_id)
+      Loaders::RecordLoader.for(Topic).load(object.topic_id)
     end
   end
 end

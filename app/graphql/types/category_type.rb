@@ -15,15 +15,15 @@ module Types
     field :parent_category, CategoryType, null: true
 
     def latest_post
-      RecordLoader.for(Post).load(object.latest_post_id)
+      Loaders::RecordLoader.for(Post).load(object.latest_post_id)
     end
 
     def latest_topic
-      RecordLoader.for(Topic).load(object.latest_topic_id)
+      Loaders::RecordLoader.for(Topic).load(object.latest_topic_id)
     end
 
     def parent_category
-      RecordLoader.for(Category).load(object.parent_category_id)
+      Loaders::RecordLoader.for(Category).load(object.parent_category_id)
     end
   end
 end

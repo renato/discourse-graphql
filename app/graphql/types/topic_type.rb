@@ -15,7 +15,7 @@ module Types
     field :category, CategoryType, null: false
 
     def category
-      RecordLoader.for(Category).load(object.category_id)
+      Loaders::RecordLoader.for(Category).load(object.category_id)
     end
   end
 end

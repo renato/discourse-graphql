@@ -12,7 +12,7 @@ module Types
       argument :page, Int, required: false
     end
 
-    field :latest_topics, [TopicType], null: false do
+    field :latest_topics, [TopicWithPostsType], null: false do
       description 'Latest topics'
       argument :page, Int, required: false
       argument :category_id, Int, required: false

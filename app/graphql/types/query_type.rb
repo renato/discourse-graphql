@@ -11,7 +11,7 @@ module Types
       argument :term, String, required: true
       argument :page, Int, required: false
       argument :per_page, Int, required: false
-      argument :blurb_length, Int, require: false
+      argument :blurb_length, Int, required: false
     end
 
     field :latest_topics, [TopicWithPostsType], null: false do

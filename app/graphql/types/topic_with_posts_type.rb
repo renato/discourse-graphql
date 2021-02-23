@@ -5,6 +5,7 @@ module Types
     field :last_posted_at, GraphQL::Types::ISO8601DateTime, null: false
     field :bumped_at, GraphQL::Types::ISO8601DateTime, null: false
     field :pinned_globally, Boolean, null: false
+    field :highest_post_number, Int, null: false
     field :reply_count, Int, null: false
     field :like_count, Int, null: false
     field :posts, [PostWithImagesType], null: false

@@ -10,6 +10,7 @@ module Types
       description 'Search for posts'
       argument :term, String, required: true
       argument :page, Int, required: false
+      argument :per_page, Int, required: false
     end
 
     field :latest_topics, [TopicWithPostsType], null: false do
@@ -40,10 +41,11 @@ module Types
       result.posts
     end
 
-    def latest_topics(page: 0, category_id: nil)
+    def latest_topics(page: 0, per_page: 9, category_id: nil)
       opts = {
         guardian: context[:guardian],
         page: page,
+        per_page: per_page,
         category: category_id
       }
 

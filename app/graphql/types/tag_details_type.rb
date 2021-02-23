@@ -25,7 +25,6 @@ module Types
         blurb_length: 300,
         page: 1
       }
-      "%5C%23dragon-castle"
       result = Search.new("\"\\##{object[:tag]}\"", search_args).execute
       context.scoped_set!(:result, result)
       result.posts

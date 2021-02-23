@@ -11,11 +11,13 @@ module Types
       argument :term, String, required: true
       argument :page, Int, required: false
       argument :per_page, Int, required: false
+      argument :blurb_length, Int, require: false
     end
 
     field :latest_topics, [TopicWithPostsType], null: false do
       description 'Latest topics'
       argument :page, Int, required: false
+      argument :per_page, Int, required: false
       argument :category_id, Int, required: false
     end
 
@@ -24,7 +26,7 @@ module Types
       argument :tag, String, required: true
     end
 
-    def search(term:, page: 1)
+    def search(term:, page: 1, blurb_length: 150)
       if term.length < SiteSetting.min_search_term_length
         raise GraphQL::ExecutionError, "Your search term is too short."
       end
@@ -32,7 +34,7 @@ module Types
       search_args = {
         type_filter: 'topic',
         guardian: context[:guardian],
-        blurb_length: 300,
+        blurb_length: blurb_length,
         page: page,
       }
 

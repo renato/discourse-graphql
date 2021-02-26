@@ -11,7 +11,7 @@ module Types
 
     def topics
       opts = {
-        #guardian: context[:guardian],
+        guardian: context[:guardian],
         page: 0,
         tags: [object[:tag]]
       }
@@ -32,22 +32,22 @@ module Types
 
     def data
       opts = {
-        guardian: context[:guardian],
+        #guardian: context[:guardian],
         page: 0,
         tags: [DATA_TAG, object[:tag]],
         match_all_tags: true
       }
-      TopicQuery.new(context[:guardian].user, opts).list_latest.topics.first
+      TopicQuery.new(nil, opts).list_latest.topics.first
     end
 
     def image
       opts = {
-        guardian: context[:guardian],
+        #guardian: context[:guardian],
         page: 0,
         tags: [IMAGE_TAG, object[:tag]],
         match_all_tags: true
       }
-      TopicQuery.new(context[:guardian].user, opts).list_latest.topics.first
+      TopicQuery.new(nil, opts).list_latest.topics.first
     end
   end
 end

@@ -8,7 +8,7 @@ module DiscourseGraphQL
     # protect_from_forgery with: :null_session
 
     def execute
-      raise Discourse::InvalidAccess.new if !Rails.env.development? && !is_api?
+      #raise Discourse::InvalidAccess.new if !Rails.env.development? && !is_api?
 
       variables = ensure_hash(params[:variables])
       query = params[:query]

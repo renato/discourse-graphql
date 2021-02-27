@@ -31,23 +31,23 @@ module Types
     end
 
     def data
-      opts = {
-        #guardian: context[:guardian],
-        page: 0,
-        tags: [DATA_TAG, object[:tag]],
-        match_all_tags: true
-      }
-      TopicQuery.new(nil, opts).list_latest.topics.first
+      find_by_tags([DATA_TAG, object[:tag]])
     end
 
     def image
-      opts = {
-        #guardian: context[:guardian],
-        page: 0,
-        tags: [IMAGE_TAG, object[:tag]],
-        match_all_tags: true
-      }
-      TopicQuery.new(nil, opts).list_latest.topics.first
+      find_by_tags([IMAGE_TAG, object[:tag]])
+    end
+
+    private
+    def find_by_tags(tags)
+      res = Topic
+      tags.each_with_index do |tag, index|
+        join_alias = ['j', index].join
+        tag_alias = ['t', index].join
+        res = res.joins("INNER JOIN topic_tags #{join_alias} ON #{join_alias}.topic_id = topics.id INNER JOIN tags #{tag_alias} on #{tag_alias}.id = #{join_alias}.tag_id")
+        res = res.where("#{tag_alias}.name" => tag)
+      end
+      res.first
     end
   end
 end

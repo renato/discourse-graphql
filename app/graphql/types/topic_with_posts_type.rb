@@ -15,7 +15,9 @@ module Types
     field :custom_field, String, null: true do
       argument :name, String, required: true
     end
-    field :images, [ImageType], null: false
+    field :images, [ImageType], null: false do
+      argument :op, Boolean, required: false
+    end
 
     def posts
       # N+1?
@@ -40,12 +42,13 @@ module Types
       object.custom_fields[name]
     end
 
-    def images
+    def images(op: false)
       arr = []
-      object.posts.map do |post|
+      posts = if op then [object.posts[0]] else object.posts[1..-1] end
+      posts.map do |post|
         # We could query post.uploads, but let's start naive
-        Nokogiri::HTML(post.cooked).css('img').map do |img|
-          arr << { id: post.id, user: post.user, image_url: img[:src], created_at: post.created_at }
+        Nokogiri::HTML(post.cooked).css('img').map.with_index do |img, index|
+          arr << { id: "#{post.id}-#{index}", user: post.user, image_url: img[:src], created_at: post.created_at }
         end
       end
       arr

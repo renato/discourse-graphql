@@ -7,7 +7,7 @@ module Types
     field :pinned_globally, Boolean, null: false
     field :highest_post_number, Int, null: false
     field :like_count, Int, null: false
-    field :posts, [PostWithImagesType], null: false
+    field :posts, [PostCustomType], null: false
     field :tags, [String], null: false
     field :image_url, String, null: true
     field :user, UserType, null: false
@@ -15,6 +15,7 @@ module Types
     field :custom_field, String, null: true do
       argument :name, String, required: true
     end
+    field :images, [ImageType], null: false
 
     def posts
       # N+1?
@@ -37,6 +38,17 @@ module Types
     def custom_field(name:)
       # N+1?
       object.custom_fields[name]
+    end
+
+    def images
+      arr = []
+      object.posts.map do |post|
+        # We could query post.uploads, but let's start naive
+        Nokogiri::HTML(post.cooked).css('img').map do |img|
+          arr << { id: post.id, user: post.user, image_url: img[:src], created_at: post.created_at }
+        end
+      end
+      arr
     end
   end
 end

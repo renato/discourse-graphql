@@ -15,19 +15,12 @@ module Types
         page: 0,
         tags: [object[:tag]]
       }
-      TopicQuery.new(nil, opts).list_latest.topics
+      TopicQuery.new(context[:guardian].user, opts).list_latest.topics
     end
 
     def feed
-      search_args = {
-        type_filter: 'topic',
-        guardian: context[:guardian],
-        blurb_length: 300,
-        page: 1
-      }
-      result = Search.new("\"\\##{object[:tag]}\"", search_args).execute
-      context.scoped_set!(:result, result)
-      result.posts
+      context.scoped_set!(:tag, object[:tag])
+      Post.secured(context[:guardian]).where("cooked LIKE ?", "%#<span>#{object[:tag]}</span>%")
     end
 
     def data

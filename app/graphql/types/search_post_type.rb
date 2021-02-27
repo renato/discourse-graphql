@@ -5,7 +5,7 @@ module Types
     field :blurb, String, null: false
 
     def blurb
-      context[:result].blurb(object)
+      Search::GroupedSearchResults.blurb_for(cooked: object[:raw], term: context[:tag], blurb_length: 150)
     end
   end
 end

@@ -20,7 +20,11 @@ module Types
 
     def feed
       context.scoped_set!(:tag, object[:tag])
-      Post.secured(context[:guardian]).where("cooked LIKE ?", "%#<span>#{object[:tag]}</span>%")
+      Post.secured(context[:guardian])
+        .visible
+        .public_posts
+        .where("cooked LIKE ?", "%#<span>#{object[:tag]}</span>%")
+        .by_newest
     end
 
     def data
